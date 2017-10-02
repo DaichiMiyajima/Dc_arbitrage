@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var moment = require("moment");
 var tools = require(__dirname + '/../util/tools.js');
 
 var candyRefresh = function(setting){
@@ -17,10 +18,11 @@ var candyRefresh = function(setting){
     this.fee = {};
     this.buyExchange = [];
     this.sellExchange = [];
+    this.lastMessagetime = moment("2000-01-01 12:00:00").format("YYYY-MM-DD HH:mm:ss");
 
 }
 
-candyRefresh.prototype.refresh = function(boards,balance,fee,pair,callback){
+candyRefresh.prototype.refresh = function(action, boards,balance,fee,pair,callback){
 
     var pair_key = pair.split ("_")[0];
     var pair_settlement = pair.split ("_")[1];
@@ -53,6 +55,7 @@ candyRefresh.prototype.refresh = function(boards,balance,fee,pair,callback){
         balancetotalObj[pairtype] = total; 
     });
 
+    
     //calcurate balancesize
     _.each(balanceObj, function(eachBalanceObj,pairtype){
         var total = 0;
@@ -60,8 +63,8 @@ candyRefresh.prototype.refresh = function(boards,balance,fee,pair,callback){
         var orderObjExchange = orderObj[pairtype];
         var eachbalanceAllocations = refreshBalanceAllocation[pairtype];
         _.each(eachBalanceObj, function(eachBalanceObjlist,eachExchange){
-            orderObjExchange[eachExchange] = balancetotalObj[pairtype] * eachbalanceAllocations[eachExchange] - eachBalanceObj[eachExchange] ;
-            total = Number(total) + Number(Math.abs(orderObjExchange[eachExchange]));
+            orderObjExchange[eachExchange] = tools.floor(balancetotalObj[pairtype] * eachbalanceAllocations[eachExchange] - eachBalanceObj[eachExchange], 7);
+            total = tools.floor(Number(total) + Number(Math.abs(orderObjExchange[eachExchange])) , 7);
         });
         ordertotalObj[pairtype] = total;
     });
@@ -161,11 +164,6 @@ candyRefresh.prototype.refresh = function(boards,balance,fee,pair,callback){
                     return true;
                 }
             }.bind(this));
-        }else{
-            message = message + '条件に合致するboard(ask)が存在しません。' + '\n' 
-                    + '手動で送金するか条件に合致する板を待つ必要があります。' + '\n' 
-                    + '-----balanceInfo-----' + '\n'
-                    + JSON.stringify(balanceObj,undefined,1);
         }
     }
     
@@ -178,7 +176,7 @@ candyRefresh.prototype.refresh = function(boards,balance,fee,pair,callback){
         message = message + 'refreshを行います。' + '\n' + JSON.stringify(ordertotalObj,undefined,1);
     }else if(ordersize != 0){
         message = message + '一部のみrefreshを行います。下記原因により一部となっています。' + '\n'
-                + '・refreshPercentage(' + this.candySettings.refresh[this.pair].percentage_from + '~' + this.candySettings.refresh[this.pair].percentage_to + ')に合致する板が少ないor存在しない' + '\n'
+                + '・refreshPercentageに合致する板が少ないor存在しない' + '\n'
                 + '・残高が不足している *念のため、残高を確認してください。' + '\n'
                 + 'ordersize:' + ordersize + '\n'
                 + '-----balanceInfo-----' + '\n'
@@ -187,13 +185,24 @@ candyRefresh.prototype.refresh = function(boards,balance,fee,pair,callback){
                 + JSON.stringify(orderObj,undefined,1);
     }else if(refreshcondition === 1){
         message = message + 'refreshの条件に合致しません。下記いずれかの問題です。' + '\n'
-                + '・refreshPercentage(' + this.candySettings.refresh[this.pair].percentage_from + ')に合致する板が少ないor存在しない' + '\n'
+                + '・refreshPercentageに合致する板が少ないor存在しない' + '\n'
                 + '・残高が不足している *念のため、残高を確認してください。' + '\n'
                 + '-----balanceInfo-----' + '\n'
                 + JSON.stringify(balanceObj,undefined,1) + '\n'
                 + '-----idealOrderInfo-----' + '\n'
                 + JSON.stringify(orderObj,undefined,1);
     }
+    console.log("this.lastMessagetime-------");
+    console.log(this.lastMessagetime);
+    if(message){
+        var datatime = moment().format("YYYY-MM-DD HH:mm:ss");
+        if(this.lastMessagetime && moment(this.lastMessagetime).add(90, "minutes") > moment(datatime)){
+            message = null;
+        }else{
+            this.lastMessagetime = moment().format("YYYY-MM-DD HH:mm:ss");
+        }
+    }
+    console.log(this.lastMessagetime);
     callback(this.order, message);
 }
 
@@ -223,11 +232,10 @@ candyRefresh.prototype.refreshpush = function(eachboardAsk,eachboardBid,num,cb){
     var bid_profit = eachboardBid.amount * actualnum - commission_ask_settlement - commission_bid_settlement;
     var refresh_actual_percentage = bid_profit / ask_profit;
     var refresh_percentage_from = this.candySettings.refresh[this.pair].percentage_from;
-    var refresh_percentage_to = this.candySettings.refresh[this.pair].percentage_to;
     if(refresh_actual_percentage >= refresh_percentage_from){
         if(balance_ask[0].amount >= cost_ask && balance_bid[0].amount >= actualnum && actualnum > this.candySettings.minimumtrade[eachboardAsk.exchange]
             && actualnum > this.candySettings.minimumtrade[eachboardBid.exchange]){
-            var orderpairkey = new Date().getTime().toString(16)  + Math.floor(strong * Math.random()).toString(16);
+            var orderpairkey = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16);
             ask_order = 
                 {
                     result : "BUY",

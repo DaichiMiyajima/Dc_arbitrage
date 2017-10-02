@@ -37,21 +37,31 @@ reporter.prototype.retainBalance = function(action, balances){
     });
     
     this.firebase.referObjectLimit(this.setting.balancePass, action.currency, 1, function(object){
-        _.each(object,function(lastbalance, key){
-            if(lastbalance.item !== total.currency){
-                this.firebase.chartUpdate(this.setting.balancePass + action.currency + '/' , 
-                    total.currency ,moment().format("YYYY-MM-DD HH:mm:ss"));
-            }
-        }.bind(this));
+        if(object){
+            _.each(object,function(lastbalance, key){
+                if(lastbalance.item !== total.currency){
+                    this.firebase.chartUpdate(this.setting.balancePass + action.currency + '/' , 
+                        total.currency ,moment().format("YYYY-MM-DD HH:mm:ss"));
+                }
+            }.bind(this));
+        }else{
+            this.firebase.chartUpdate(this.setting.balancePass + action.currency + '/' , 
+                total.currency ,moment().format("YYYY-MM-DD HH:mm:ss"));
+        }
     }.bind(this));
     
     this.firebase.referObjectLimit(this.setting.balancePass, action.asset, 1, function(object){
-        _.each(object,function(lastbalance, key){
-            if(lastbalance.item !== total.asset){
-                this.firebase.chartUpdate(this.setting.balancePass + action.asset + '/' , 
-                    total.asset ,moment().format("YYYY-MM-DD HH:mm:ss"));
-            }
-        }.bind(this));
+        if(object){
+            _.each(object,function(lastbalance, key){
+                if(lastbalance.item !== total.asset){
+                    this.firebase.chartUpdate(this.setting.balancePass + action.asset + '/' , 
+                        total.asset ,moment().format("YYYY-MM-DD HH:mm:ss"));
+                }
+            }.bind(this));
+        }else{
+            this.firebase.chartUpdate(this.setting.balancePass + action.asset + '/' , 
+                total.asset ,moment().format("YYYY-MM-DD HH:mm:ss"));
+        }
     }.bind(this));
 
 }

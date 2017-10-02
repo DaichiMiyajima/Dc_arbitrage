@@ -36,7 +36,7 @@ advisor.prototype.update = function(action, boards, balance, orderfaileds, callb
     if(orderfaileds){
         var reorders = [];
         _.each(orderfaileds, function(orderfailed){
-            this.indicator.arbitrage.orderRecalcurate(candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee, orderfailed, function(err, reorder){
+            this.indicator.arbitrage.orderRecalcurate(action, candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee, orderfailed, function(err, reorder){
                 if(err){
                     this.logger.lineNotification(err.message);
                 }else if(reorder.length == 0){
@@ -51,7 +51,7 @@ advisor.prototype.update = function(action, boards, balance, orderfaileds, callb
 
     }else if(action.action == 'think'){
 
-        this.indicator.arbitrage.arbitrage(candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee, function(orders, revenue){
+        this.indicator.arbitrage.arbitrage(action, candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee, function(orders, revenue){
 
             var estimatedRevenue = tools.round(revenue, 8);
             console.log('想定利益は' + estimatedRevenue + action.currency + 'です');
@@ -74,8 +74,8 @@ advisor.prototype.update = function(action, boards, balance, orderfaileds, callb
             }
         }.bind(this));
     }else if(action.action == 'refresh'){
-        this.indicator.refresh.refresh(candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee, action.pair, function(orders, message){
-            if(message && orders.length > 0){
+        this.indicator.refresh.refresh(action, candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee, action.pair, function(orders, message){
+            if(message){
                 this.logger.lineNotification(message);
             }else{
                 console.log(message);
@@ -117,16 +117,14 @@ var convert = function(action, groupedBoards, balances, setting){
             exchange_type : exchange_type_count,
             exchange : key,
             currency_code : action.currency,
-            //amount : balance[key].currencyAvailable
-            amount : 100000
+            amount : Number(balance[key].currencyAvailable)
         });
 
         candyThinkWay.balance.push({
             exchange_type : exchange_type_count,
             exchange : key,
             currency_code : action.asset,
-            //amount : balance[key].assetAvailable
-            amount : 0.2
+            amount : Number(balance[key].assetAvailable)
         });
 
         candyThinkWay.fee.push({
@@ -195,7 +193,7 @@ var convert = function(action, groupedBoards, balances, setting){
                             amount : Number(order[0]),
                             actualAmount : Number(order[0]),
                             product_code : action.pair,
-                            specific_product_code : action[board.exchange].pair,
+                            specific_product_code : action[board.exchange].productid,
                             time : board.time
                         })
                     }

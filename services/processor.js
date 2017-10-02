@@ -13,7 +13,7 @@ var processor = function(advisor, logger, inMemory, reporter){
         this.logger.debug('Added ' + task.name + ' call to the process queue.');
         this.logger.debug('There are currently ' + this.q.running() + ' running jobs and ' + this.q.length() + ' jobs in queue.');
         task.func(function() { 
-            setTimeout(callback, 1000 * 30); 
+            setTimeout(callback, 1000 * 45); 
         });
     }.bind(this), 1);
 
@@ -52,13 +52,9 @@ processor.prototype.process = function(action, orderFailed, exchangeapi) {
 processor.prototype.orderFailedVacuum = function(action, orderFailed, exchangeapi, process){
 
     this.inMemory.orderFailed.push(orderFailed);
-    console.log("this.inMemory.orderFailed");
-    console.log(this.inMemory.orderFailed);
 
     if(this.inMemory.orderFailed.length == 1){
         setTimeout(function(){
-            console.log("Settimeout : this.inMemory.orderFailed");
-            console.log(this.inMemory.orderFailed);
             process(action, this.inMemory.orderFailed, exchangeapi);
             this.inMemory.orderFailed = [];
         }.bind(this), 1000 * 20);

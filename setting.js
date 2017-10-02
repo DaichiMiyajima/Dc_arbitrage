@@ -16,8 +16,8 @@ setting.boardLimit = 1;
 
 setting.minimumtrade = {
     poloniex : 0.0001,
-    kraken : 0.01,
-    bitflyer : 0.01,
+    kraken : 0.001,
+    bitflyer : 0.001,
     quoine : 0.01
 }
 
@@ -126,19 +126,18 @@ setting.profit = {
         profit_sum : 0.001
     },
     'BTC_JPY' : {
-        profit_percentage : 1.006,
-        profit_sum : 0.001
+        profit_percentage : 1.007,
+        profit_sum : 400
     },
     'ETH_JPY' : {
-        profit_percentage : 1.006,
-        profit_sum : 0.001
+        profit_percentage : 1.007,
+        profit_sum : 400
     }
 };
 
 setting.refresh = {
     'ETH_BTC' : {
         percentage_from : 1.0005,
-        percentage_to : 1.005,
         bal_amt_percentage : 0.7,
         allocate : {
             ETH : {
@@ -155,7 +154,6 @@ setting.refresh = {
     },
     'XRP_BTC' : {
         percentage_from : 1.0005,
-        percentage_to : 1.005,
         bal_amt_percentage : 0.7,
         allocate : {
             XRP : {
@@ -172,24 +170,22 @@ setting.refresh = {
     },
     'BTC_JPY' : {
         percentage_from : 1.0005,
-        percentage_to : 1.005,
         bal_amt_percentage : 0.7,
         allocate : {
             BTC : {
-                kraken : 0.2,
+                kraken : 0,
                 bitflyer : 0.4,
-                quoine : 0.4
+                quoine : 0.6
             },
             JPY : {
-                kraken : 0.2,
+                kraken : 0,
                 bitflyer : 0.4,
-                quoine : 0.4
+                quoine : 0.6
             }
         }
     },
     'ETH_JPY' : {
         percentage_from : 1.0005,
-        percentage_to : 1.005,
         bal_amt_percentage : 0.7,
         allocate : {
             ETH : {

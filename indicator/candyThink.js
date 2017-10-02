@@ -26,7 +26,7 @@ Util.inherits(candyThink, EventEmitter);
 /* arbitrage 
 ** 5分に1回全ての板情報を計算する。都度計算は行わない。
 */
-candyThink.prototype.arbitrage = function(boards,balance,fee,callback){
+candyThink.prototype.arbitrage = function(action, boards,balance,fee,callback){
 
     console.log(balance);
     console.log('----------------kraken----------------');
@@ -252,7 +252,8 @@ candyThink.prototype.orderpush = function(eachboardAsk,eachboardBid,num){
 
 }
 
-candyThink.prototype.orderRecalcurate = function(boards,balance,fee,orderFailed,callback){
+candyThink.prototype.orderRecalcurate = function(action, boards,balance,fee,orderFailed,callback){
+
     var boards_reorder;
     var balance_conf;
     if(orderFailed.result === 'SELL'){

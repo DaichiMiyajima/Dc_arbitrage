@@ -80,7 +80,7 @@ var trader = function(){
             getBalanceRetry : true,
             getBoardRetry : true
         };
-        action = _.extend(action, setting.pair[orderFailed.pair]);
+        action = _.extend(action, setting.pair[orderFailed.formatedpair]);
         processor.orderFailedVacuum(action, orderFailed, exchangeapi, processor.process);
     });
 
