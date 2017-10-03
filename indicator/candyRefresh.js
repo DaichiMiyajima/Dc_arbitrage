@@ -192,9 +192,7 @@ candyRefresh.prototype.refresh = function(action, boards,balance,fee,pair,callba
                 + '-----idealOrderInfo-----' + '\n'
                 + JSON.stringify(orderObj,undefined,1);
     }
-    console.log("this.lastMessagetime-------");
-    console.log(this.lastMessagetime);
-    if(message){
+    if(ordersize === 0 && message){
         var datatime = moment().format("YYYY-MM-DD HH:mm:ss");
         if(this.lastMessagetime && moment(this.lastMessagetime).add(90, "minutes") > moment(datatime)){
             message = null;
@@ -202,7 +200,6 @@ candyRefresh.prototype.refresh = function(action, boards,balance,fee,pair,callba
             this.lastMessagetime = moment().format("YYYY-MM-DD HH:mm:ss");
         }
     }
-    console.log(this.lastMessagetime);
     callback(this.order, message);
 }
 

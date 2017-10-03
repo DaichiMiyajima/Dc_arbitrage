@@ -126,11 +126,11 @@ setting.profit = {
         profit_sum : 0.001
     },
     'BTC_JPY' : {
-        profit_percentage : 1.007,
+        profit_percentage : 1.005,
         profit_sum : 400
     },
     'ETH_JPY' : {
-        profit_percentage : 1.007,
+        profit_percentage : 1.005,
         profit_sum : 400
     }
 };
