@@ -42,7 +42,7 @@ var trader = function(){
         if(system == 'stop'){
             logger.lineNotification("緊急停止が選択されました。システムを停止します", function(finished){
                 finished();
-                var result =  execSync('forever stop candy.js');
+                var result =  execSync('forever stop arbitrage.js');
             });
         }else if(system == 'running'){
             logger.lineNotification("取引を開始します", function(finished){

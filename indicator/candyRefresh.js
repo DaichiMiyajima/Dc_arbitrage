@@ -194,7 +194,7 @@ candyRefresh.prototype.refresh = function(action, boards,balance,fee,pair,callba
     }
     if(ordersize === 0 && message){
         var datatime = moment().format("YYYY-MM-DD HH:mm:ss");
-        if(this.lastMessagetime && moment(this.lastMessagetime).add(90, "minutes") > moment(datatime)){
+        if(this.lastMessagetime && moment(this.lastMessagetime).add(180, "minutes") > moment(datatime)){
             message = null;
         }else{
             this.lastMessagetime = moment().format("YYYY-MM-DD HH:mm:ss");

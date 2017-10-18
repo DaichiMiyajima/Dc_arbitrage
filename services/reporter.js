@@ -32,36 +32,34 @@ reporter.prototype.retainBalance = function(action, balances){
 
     balances.forEach(function(balance){
         var key = Object.keys(balance)[0];
-        total.currency += tools.round(balance[key].currencyAvailable, 8);
-        total.asset += tools.round(balance[key].assetAvailable, 8);
-    });
-    
-    this.firebase.referObjectLimit(this.setting.balancePass, action.currency, 1, function(object){
-        if(object){
-            _.each(object,function(lastbalance, key){
-                if(lastbalance.item !== total.currency){
-                    this.firebase.chartUpdate(this.setting.balancePass + action.currency + '/' , 
-                        total.currency ,moment().format("YYYY-MM-DD HH:mm:ss"));
-                }
-            }.bind(this));
-        }else{
-            this.firebase.chartUpdate(this.setting.balancePass + action.currency + '/' , 
-                total.currency ,moment().format("YYYY-MM-DD HH:mm:ss"));
-        }
-    }.bind(this));
-    
-    this.firebase.referObjectLimit(this.setting.balancePass, action.asset, 1, function(object){
-        if(object){
-            _.each(object,function(lastbalance, key){
-                if(lastbalance.item !== total.asset){
-                    this.firebase.chartUpdate(this.setting.balancePass + action.asset + '/' , 
-                        total.asset ,moment().format("YYYY-MM-DD HH:mm:ss"));
-                }
-            }.bind(this));
-        }else{
-            this.firebase.chartUpdate(this.setting.balancePass + action.asset + '/' , 
-                total.asset ,moment().format("YYYY-MM-DD HH:mm:ss"));
-        }
+        //currency
+        this.firebase.referObjectLimit(this.setting.balancePass + "/" + key, action.currency, 1, function(object){
+            if(object){
+                _.each(object,function(lastbalance, lastbalancekey){
+                    if(lastbalance.item !== tools.round(balance[key].currencyAvailable, 8)){
+                        this.firebase.chartUpdate(this.setting.balancePass + "/" + key + "/" + action.currency , 
+                            tools.round(balance[key].currencyAvailable, 8) ,moment().format("YYYY-MM-DD HH:mm:ss"));
+                    }
+                }.bind(this));
+            }else{
+                this.firebase.chartUpdate(this.setting.balancePass + "/" + key + "/" + action.currency , 
+                    tools.round(balance[key].currencyAvailable, 8) ,moment().format("YYYY-MM-DD HH:mm:ss"));
+            }
+        }.bind(this));
+        //Asset
+        this.firebase.referObjectLimit(this.setting.balancePass + "/" + key, action.asset, 1, function(object){
+            if(object){
+                _.each(object,function(lastbalance, lastbalancekey){
+                    if(lastbalance.item !== tools.round(balance[key].assetAvailable, 8)){
+                        this.firebase.chartUpdate(this.setting.balancePass + "/" + key + "/" + action.asset , 
+                            tools.round(balance[key].assetAvailable, 8) ,moment().format("YYYY-MM-DD HH:mm:ss"));
+                    }
+                }.bind(this));
+            }else{
+                this.firebase.chartUpdate(this.setting.balancePass + "/" + key + "/" + action.asset , 
+                    tools.round(balance[key].assetAvailable, 8) ,moment().format("YYYY-MM-DD HH:mm:ss"));
+            }
+        }.bind(this));
     }.bind(this));
 
 }

@@ -78,7 +78,8 @@ setting.pair = {
         currency : "JPY",
         asset : "BTC",
         pair : "BTC_JPY",
-        exchange : ['kraken', 'bitflyer','quoine'],
+        //exchange : ['kraken', 'bitflyer','quoine'],
+        exchange : ['bitflyer','quoine'],
         bitflyer : {
             product_code : "BTC_JPY",
             pair : "BTC_JPY",
@@ -126,11 +127,11 @@ setting.profit = {
         profit_sum : 0.001
     },
     'BTC_JPY' : {
-        profit_percentage : 1.005,
-        profit_sum : 400
+        profit_percentage : 1.006,
+        profit_sum : 600
     },
     'ETH_JPY' : {
-        profit_percentage : 1.005,
+        profit_percentage : 1.006,
         profit_sum : 400
     }
 };
@@ -174,13 +175,13 @@ setting.refresh = {
         allocate : {
             BTC : {
                 kraken : 0,
-                bitflyer : 0.4,
-                quoine : 0.6
+                bitflyer : 0.5,
+                quoine : 0.5
             },
             JPY : {
                 kraken : 0,
-                bitflyer : 0.4,
-                quoine : 0.6
+                bitflyer : 0.5,
+                quoine : 0.5
             }
         }
     },
