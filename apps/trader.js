@@ -119,9 +119,47 @@ var trader = function(){
         agent.order(order);
     });
 
-    advisor.on('status', function(action){
-        firebase.statusUpdate(action);
-    })
+    candyThink.on('orderprofit', function(orders, action, revenue){
+        if(orders.length > 0){
+            var estimatedRevenue = tools.round(revenue, 8);
+            console.log('想定利益は' + estimatedRevenue + action.currency + 'です');
+            //following code is for test
+            //firebase.statusUpdate(action);
+        }else{
+            firebase.statusUpdate(action);
+        }
+    });
+    
+    candyThink.on('orderpush', function(orderObj){
+        console.log("orderObj:"+ orderObj);
+        agent.order(orderObj);
+    });
+    
+    candyThink.on('orderfail', function(err, reorders){
+        if(err){
+            logger.lineNotification(err.message);
+        }else{
+            reorders.forEach(function(orderObj){
+                agent.order(orderObj);
+            });
+        }
+    });
+
+    candyRefresh.on('refreshfinish', function(orders, action, message){
+        if(message){
+            logger.lineNotification(message);
+            //following code is for test
+            //firebase.statusUpdate(action);
+        }
+        if(orders.length == 0){
+            firebase.statusUpdate(action);
+        }
+    });
+
+    candyRefresh.on('orderpush', function(orderObj){
+        console.log("orderObj:"+ orderObj);
+        agent.order(orderObj);
+    });
 
     process.on('uncaughtException', function (err) {
         var errMsg = "";

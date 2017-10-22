@@ -20,7 +20,7 @@ var EventEmitter = require('events').EventEmitter;
 Util.inherits(advisor, EventEmitter);
 //---EventEmitter Setup
 
-advisor.prototype.update = function(action, boards, balance, orderfaileds, callback) {
+advisor.prototype.update = function(action, boards, balance, orderfaileds) {
 
     // orderfailed can be left out
     if(typeof orderfaileds == "function") { 
@@ -34,68 +34,15 @@ advisor.prototype.update = function(action, boards, balance, orderfaileds, callb
     // ******************************************************************
     
     if(orderfaileds){
-        var reorders = [];
         _.each(orderfaileds, function(orderfailed){
-            this.indicator.arbitrage.orderRecalcurate(action, candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee, orderfailed, function(err, reorder){
-                if(err){
-                    this.logger.lineNotification(err.message);
-                }else if(reorder.length == 0){
-                    
-                }else{
-                    Array.prototype.push.apply(reorders, reorder);
-                }
-            }.bind(this));
+            this.indicator.arbitrage.orderRecalcurate(action, candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee, orderfailed);
         }.bind(this));
-
-        callback(_.flatten(reorders));
-
     }else if(action.action == 'think'){
-
-        this.indicator.arbitrage.arbitrage(action, candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee, function(orders, revenue){
-
-            var estimatedRevenue = tools.round(revenue, 8);
-            console.log('想定利益は' + estimatedRevenue + action.currency + 'です');
-
-            if(orders.length == 0){
-                callback(new Array());
-                this.emit('status', action);
-            }else if(estimatedRevenue < 0){
-                this.logger.lineNotification("利益額" + tools.round(revenue, 8) + "BTCはリスク回避額" + this.setting.space + "BTCに満たないため、オーダーは実施しません");
-                this.emit('status', action);
-                callback(new Array());
-            }else if(orders && estimatedRevenue >= 0){
-                callback(orders);
-                this.logger.lineNotification("予想最高利益額は" + estimatedRevenue + action.currency +"です");
-                
-                //This code is just for test
-                //this.emit('status', action);
-            }else{
-                throw "オーダーの形式に誤りがあります";
-            }
-        }.bind(this));
+        this.indicator.arbitrage.arbitrage(action, candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee);
     }else if(action.action == 'refresh'){
-        this.indicator.refresh.refresh(action, candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee, action.pair, function(orders, message){
-            if(message){
-                this.logger.lineNotification(message);
-            }else{
-                console.log(message);
-            }
-            if(orders.length == 0){
-                this.emit('status', action);
-                callback(new Array());
-            }else if(orders.length > 0){
-                callback(orders);
-            }else{
-                throw "オーダーの形式に誤りがあります";
-            }
-            
-        
-         }.bind(this));
-    
+        this.indicator.refresh.refresh(action, candyThinkWay.boards, candyThinkWay.balance, candyThinkWay.fee, action.pair);
     }else{
-
         throw "status形式に誤りがあります";
-
     }
 };
 
@@ -117,14 +64,16 @@ var convert = function(action, groupedBoards, balances, setting){
             exchange_type : exchange_type_count,
             exchange : key,
             currency_code : action.currency,
-            amount : Number(balance[key].currencyAvailable)
+            //amount : Number(balance[key].currencyAvailable)
+            amount : 1000000000000000000000
         });
 
         candyThinkWay.balance.push({
             exchange_type : exchange_type_count,
             exchange : key,
             currency_code : action.asset,
-            amount : Number(balance[key].assetAvailable)
+            //amount : Number(balance[key].assetAvailable)
+            amount : 1000000000000000000000
         });
 
         candyThinkWay.fee.push({

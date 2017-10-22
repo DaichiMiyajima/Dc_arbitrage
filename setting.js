@@ -11,6 +11,8 @@ setting.requestPass = env + '/common/system/Request/'
 setting.profitPass = env + '/think/chart/profit/';
 setting.orderCompletionPass = env + '/common/system/orderstatus';
 
+setting.analysisPass = '/analysis/';
+
 setting.space = 0.001;
 setting.boardLimit = 1;
 

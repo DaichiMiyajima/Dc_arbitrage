@@ -27,17 +27,8 @@ processor.prototype.process = function(action, orderFailed, exchangeapi) {
         exchangeapi.getBalance(action, action.getBalanceRetry, function(balances){
             if(action.action != 'orderFailed') this.reporter.retainBalance(action, balances);
             exchangeapi.getBoards(action, action.getBoardRetry, function(board){
-                this.advisor.update(action, board, balances, orderFailed, function(orders){
-                    orders.forEach(function(order){
-                        if(order.result) {
-                            this.emit('orderStream', order);
-                        } else {
-                            var err = 'Invalid advice from indicator, should be either: buy or sell.';
-                            throw err;
-                        }
-                    }.bind(this));
-                    finished();
-                }.bind(this));
+                this.advisor.update(action, board, balances, orderFailed);
+                finished();
             }.bind(this));
         }.bind(this));
     }.bind(this);

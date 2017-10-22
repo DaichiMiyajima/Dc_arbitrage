@@ -22,6 +22,12 @@ var candyRefresh = function(setting){
 
 }
 
+//---EventEmitter Setup
+var Util = require('util');
+var EventEmitter = require('events').EventEmitter;
+Util.inherits(candyRefresh, EventEmitter);
+//---EventEmitter Setup
+
 candyRefresh.prototype.refresh = function(action, boards,balance,fee,pair,callback){
 
     var pair_key = pair.split ("_")[0];
@@ -200,7 +206,7 @@ candyRefresh.prototype.refresh = function(action, boards,balance,fee,pair,callba
             this.lastMessagetime = moment().format("YYYY-MM-DD HH:mm:ss");
         }
     }
-    callback(this.order, message);
+    this.emit('refreshfinish', this.order, action, message);
 }
 
 candyRefresh.prototype.refreshpush = function(eachboardAsk,eachboardBid,num,cb){
@@ -263,6 +269,8 @@ candyRefresh.prototype.refreshpush = function(eachboardAsk,eachboardBid,num,cb){
                     refresh : "refresh",
                     orderpairkey : orderpairkey
                 }
+            this.emit('orderpush', ask_order);
+            this.emit('orderpush', bid_order);
             this.order.push(ask_order);
             this.order.push(bid_order);
             _.where(this.balance, {currency_code: eachboardAsk.product_code.split ("_")[1],exchange : eachboardAsk.exchange})[0].amount = balance_ask[0].amount - cost_ask;

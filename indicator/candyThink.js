@@ -42,6 +42,14 @@ candyThink.prototype.arbitrage = function(action, boards,balance,fee,callback){
     console.log(_.sortBy(_.where(boards, {exchange: 'poloniex',ask_bid:'ask'}),"amount")[0]);
     console.log(_.sortBy(_.where(boards, {exchange: 'poloniex',ask_bid:'bid'}),"amount").reverse()[0]);
     
+    
+    console.log('----------------max----------------');
+    console.log( _.sortBy(_.where(boards, {ask_bid:'ask'}),"amount")[0]);
+    console.log(_.sortBy(_.where(boards, {ask_bid:'bid'}),"amount").reverse()[0]);
+    var maxprofit =  _.sortBy(_.where(boards, {ask_bid:'bid'}),"amount").reverse()[0].amount / _.sortBy(_.where(boards, {ask_bid:'ask'}),"amount")[0].amount;
+    maxprofit = tools.round(maxprofit, 5);
+    console.log(maxprofit);
+    
     this.balance = balance;
     this.fee = fee;
     //orderをclear
@@ -144,8 +152,7 @@ candyThink.prototype.arbitrage = function(action, boards,balance,fee,callback){
         price_sell = price_sell + ((selllist.formatedprice * selllist.size) - (selllist.formatedprice * selllist.size * _.where(this.fee, {exchange: selllist.exchange})[0].fee/100));
     }.bind(this));
 
-    // orderがなければnullをorderにセット
-    callback(this.order, price_sell - price_buy);
+    this.emit('orderprofit', this.order, action, price_sell - price_buy);
 
     //orderをclear
     this.orderclear();
@@ -245,6 +252,8 @@ candyThink.prototype.orderpush = function(eachboardAsk,eachboardBid,num){
                     commission_key_pre : commission_bid_key,
                     orderpairkey : orderpairkey
                 }
+            this.emit('orderpush', ask_order);
+            this.emit('orderpush', bid_order);
             this.order.push(ask_order);
             this.order.push(bid_order);
         }
@@ -252,7 +261,7 @@ candyThink.prototype.orderpush = function(eachboardAsk,eachboardBid,num){
 
 }
 
-candyThink.prototype.orderRecalcurate = function(action, boards,balance,fee,orderFailed,callback){
+candyThink.prototype.orderRecalcurate = function(action, boards,balance,fee,orderFailed){
 
     var boards_reorder;
     var balance_conf;
@@ -343,22 +352,20 @@ candyThink.prototype.orderRecalcurate = function(action, boards,balance,fee,orde
         return true;
     }.bind(this));
     if(reorder.length > 0 && num === 0){
-        callback(null,reorder);
+        this.emit('orderfail', null,reorder);
     }else if(reorder.length > 0 && num !== 0){
         var message = orderFailed.exchange + "(" + orderFailed.result + ":" + orderFailed.orderfailedkey + ") Size:" + num + '\n' + '残高不足で上記のsize分実行できませんでした。reorderは実施しません。'
         var err = {err:'1',message: message};
-        callback(err,null);
+        this.emit('orderfail', err,null);
     }else{
         var err = {err:'1',message:'残高が足りません。reorderは実施しません。'};
-        callback(err,null);
+        this.emit('orderfail', err,null);
     }
     reorder.length = 0;
 }
 
 candyThink.prototype.orderclear = function(){
-
     this.order.length = 0;
-
 }
 
 module.exports = candyThink;
