@@ -126,10 +126,12 @@ var trader = function(){
         if(orders.length > 0){
             var estimatedRevenue = tools.round(revenue, 8);
             console.log('想定利益は' + estimatedRevenue + action.currency + 'です');
+            logger.lineNotification('想定利益は' + estimatedRevenue + action.currency + 'です');
             //following code is for test
             firebase.statusUpdate(action);
         }else{
             console.log('想定利益は' + '0です。仲裁できる板が存在しません。');
+            logger.lineNotification("想定利益は' + '0です。仲裁できる板が存在しません。\n");
             firebase.statusUpdate(action);
         }
     });
