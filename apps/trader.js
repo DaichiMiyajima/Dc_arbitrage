@@ -91,7 +91,6 @@ var trader = function(){
             getBalanceRetry : true,
             getBoardRetry : false
         };
-        
         if(moment().diff(tradeStatus.time, 'seconds') < 60){
             if(tradeStatus.system == 'think'){
                 action.action = 'refresh';
@@ -119,13 +118,18 @@ var trader = function(){
         agent.order(order);
     });
 
+    advisor.on('status', function(action){
+        firebase.statusUpdate(action);
+    })
+
     candyThink.on('orderprofit', function(orders, action, revenue){
         if(orders.length > 0){
             var estimatedRevenue = tools.round(revenue, 8);
             console.log('想定利益は' + estimatedRevenue + action.currency + 'です');
             //following code is for test
-            //firebase.statusUpdate(action);
+            firebase.statusUpdate(action);
         }else{
+            console.log('想定利益は' + '0です。仲裁できる板が存在しません。');
             firebase.statusUpdate(action);
         }
     });
@@ -134,7 +138,7 @@ var trader = function(){
         console.log("orderObj:"+ orderObj);
         agent.order(orderObj);
     });
-    
+
     candyThink.on('orderfail', function(err, reorders){
         if(err){
             logger.lineNotification(err.message);
@@ -160,6 +164,7 @@ var trader = function(){
         console.log("orderObj:"+ orderObj);
         agent.order(orderObj);
     });
+
 
     process.on('uncaughtException', function (err) {
         var errMsg = "";
@@ -190,4 +195,3 @@ trader.prototype.start = function() {
 var traderApp = new trader();
 
 module.exports = traderApp;
-

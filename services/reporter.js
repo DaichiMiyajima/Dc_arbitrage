@@ -12,7 +12,7 @@ var reporter = function(firebase, setting, logger, inMemory){
 
 }
 
-reporter.prototype.reportBalance = function(balances){
+reporter.prototype.reportBalance = function(action,balances){
 
     balances.forEach(function(balance){
         var key = Object.keys(balance)[0];

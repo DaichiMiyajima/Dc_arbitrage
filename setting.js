@@ -24,11 +24,12 @@ setting.minimumtrade = {
 }
 
 setting.sequence = {
-    //'ETH_BTC' : 'XRP_BTC',
+    //'ETH_BTC' : 'XRP_BTC'
     //'XRP_BTC' : 'ETH_BTC',
     //'ETH_BTC' : 'BTC_JPY',
-    'BTC_JPY' : 'BTC_JPY'
+    //'BTC_JPY' : 'BTC_JPY'
     //'ETH_JPY' : 'BTC_JPY'
+    'ETH_BTC' : 'ETH_BTC'
 }
 
 setting.pair = {
