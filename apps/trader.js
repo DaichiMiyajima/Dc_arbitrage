@@ -130,8 +130,8 @@ var trader = function(){
             //following code is for test
             firebase.statusUpdate(action);
         }else{
-            console.log('想定利益は' + '0です。仲裁できる板が存在しません。');
-            logger.lineNotification("想定利益は' + '0です。仲裁できる板が存在しません。\n");
+            console.log('想定利益は0です。裁定できる板が存在しません。');
+            logger.lineNotification("想定利益は0です。裁定？できる板が存在しません。\n");
             firebase.statusUpdate(action);
         }
     });
