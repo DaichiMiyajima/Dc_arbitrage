@@ -131,7 +131,7 @@ var trader = function(){
             firebase.statusUpdate(action);
         }else{
             //console.log('想定利益は0です。裁定できる板が存在しません。');
-            logger.lineNotification("想定利益は0です。裁定できる板が存在しません。\n");
+            //logger.lineNotification("想定利益は0です。裁定できる板が存在しません。\n");
             firebase.statusUpdate(action);
         }
     });
