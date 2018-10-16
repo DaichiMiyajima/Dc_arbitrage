@@ -122,8 +122,8 @@ setting.pair = {
 
 setting.profit = {
     'ETH_BTC' : {
-        profit_percentage : 1.006,
-        profit_sum : 0.001
+        profit_percentage : 1.0001,
+        profit_sum : 0.000001
     },
     'XRP_BTC' : {
         profit_percentage : 1.006,
