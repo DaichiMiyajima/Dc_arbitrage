@@ -28,6 +28,20 @@ Util.inherits(candyThink, EventEmitter);
 */
 candyThink.prototype.arbitrage = function(action, boards,balance,fee,callback){
 
+    console.log(balance);
+    console.log('----------------kraken----------------');
+    console.log(_.sortBy(_.where(boards, {exchange: 'kraken',ask_bid:'ask'}),"amount")[0]);
+    console.log(_.sortBy(_.where(boards, {exchange: 'kraken',ask_bid:'bid'}),"amount").reverse()[0]);
+    console.log('----------------bitflyer----------------');
+    console.log(_.sortBy(_.where(boards, {exchange: 'bitflyer',ask_bid:'ask'}),"amount")[0]);
+    console.log(_.sortBy(_.where(boards, {exchange: 'bitflyer',ask_bid:'bid'}),"amount").reverse()[0]);
+    console.log('----------------quoine----------------');
+    console.log(_.sortBy(_.where(boards, {exchange: 'quoine',ask_bid:'ask'}),"amount")[0]);
+    console.log(_.sortBy(_.where(boards, {exchange: 'quoine',ask_bid:'bid'}),"amount").reverse()[0]);
+    console.log('----------------poloniex----------------');
+    console.log(_.sortBy(_.where(boards, {exchange: 'poloniex',ask_bid:'ask'}),"amount")[0]);
+    console.log(_.sortBy(_.where(boards, {exchange: 'poloniex',ask_bid:'bid'}),"amount").reverse()[0]);
+    
     console.log("arbitrage!!!!");
     var maxprofit =  _.sortBy(_.where(boards, {ask_bid:'bid'}),"amount").reverse()[0].amount / _.sortBy(_.where(boards, {ask_bid:'ask'}),"amount")[0].amount;
     maxprofit = tools.round(maxprofit, 5);
