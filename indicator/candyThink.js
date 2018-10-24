@@ -42,9 +42,9 @@ candyThink.prototype.arbitrage = function(action, boards,balance,fee,callback){
     console.log(_.sortBy(_.where(boards, {exchange: 'poloniex',ask_bid:'ask'}),"amount")[0]);
     console.log(_.sortBy(_.where(boards, {exchange: 'poloniex',ask_bid:'bid'}),"amount").reverse()[0]);
     
-    console.log("arbitrage!!!!");
     var maxprofit =  _.sortBy(_.where(boards, {ask_bid:'bid'}),"amount").reverse()[0].amount / _.sortBy(_.where(boards, {ask_bid:'ask'}),"amount")[0].amount;
     maxprofit = tools.round(maxprofit, 5);
+    console.log("----------------maxprofit----------------");
     console.log(maxprofit);
     
     this.balance = balance;
@@ -141,15 +141,19 @@ candyThink.prototype.arbitrage = function(action, boards,balance,fee,callback){
 
     // いくらの売り買いか確認
     var price_buy = 0;
+    var tradeexchange = "Buy:";
     _.each(_.where(this.order, {result: "BUY"}),function(buylist,key){
+        tradeexchange = tradeexchange + " " + buylist.exchange;
         price_buy = price_buy + ((buylist.formatedprice * buylist.size) + (buylist.formatedprice * buylist.size * _.where(this.fee, {exchange: buylist.exchange})[0].fee/100));
     }.bind(this));
     var price_sell = 0;
+    tradeexchange = tradeexchange + "\n" + "SELL:";
     _.each(_.where(this.order, {result: "SELL"}),function(selllist,key){
+        tradeexchange = tradeexchange + " " + selllist.exchange;
         price_sell = price_sell + ((selllist.formatedprice * selllist.size) - (selllist.formatedprice * selllist.size * _.where(this.fee, {exchange: selllist.exchange})[0].fee/100));
     }.bind(this));
 
-    this.emit('orderprofit', this.order, action, price_sell - price_buy);
+    this.emit('orderprofit', this.order, action, price_sell - price_buy,tradeexchange);
 
     //orderをclear
     this.orderclear();

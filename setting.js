@@ -38,7 +38,7 @@ setting.pair = {
         asset : "ETH",
         pair : "ETH_BTC",
         //exchange : ['bitflyer', 'kraken', 'quoine', 'poloniex'],
-        exchange : ['bitflyer', 'poloniex'],
+        exchange : ['bitflyer', 'poloniex', 'quoine'],
         bitflyer : {
             product_code : "ETH_BTC",
             pair : "ETH_BTC",
@@ -55,13 +55,13 @@ setting.pair = {
             pair : "BTC_ETH",
             currency : "BTC",
             asset : "ETH"
-        }/*,
+        },
         quoine : {
             pair : "ETH_BTC",
             currency : "BTC",
             asset : "ETH",
             productid : "37"
-        }*/
+        }
     },
     'XRP_BTC' : {
         currency : "BTC",
@@ -124,8 +124,8 @@ setting.pair = {
 
 setting.profit = {
     'ETH_BTC' : {
-        profit_percentage : 1.004,
-        profit_sum : 0.00003
+        profit_percentage : 1.0001,
+        profit_sum : 0.000001
     },
     'XRP_BTC' : {
         profit_percentage : 1.006,
