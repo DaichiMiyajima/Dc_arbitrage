@@ -32,10 +32,6 @@ var agent = new agentService(firebase, setting);
 var reporter = new reportService(firebase, setting, logger, inMemory);
 var processor = new processorService(advisor, logger, inMemory, reporter);
 
-//for test
-var quoine = require(__dirname + '/../exchanges/quoine.js');
-var quoine_access = new quoine(config, logger, setting);
-
 var trader = function(){
 
     firebase.on('systemStream',function(system){
@@ -122,11 +118,11 @@ var trader = function(){
         firebase.statusUpdate(action);
     })
 
-    candyThink.on('orderprofit', function(orders, action, revenue){
+    candyThink.on('orderprofit', function(orders, action, revenue, tradeexchange){
         if(orders.length > 0){
             var estimatedRevenue = tools.round(revenue, 8);
-            console.log('想定利益は' + estimatedRevenue + action.currency + 'です');
-            logger.lineNotification('想定利益は' + estimatedRevenue + action.currency + 'です');
+            console.log('想定利益は' + estimatedRevenue + action.currency + 'です' + "\n" + tradeexchange);
+            logger.lineNotification('想定利益は' + estimatedRevenue + action.currency + 'です' + "\n" + tradeexchange);
             //following code is for test
             firebase.statusUpdate(action);
         }else{

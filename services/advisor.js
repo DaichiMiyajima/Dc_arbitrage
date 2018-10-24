@@ -65,7 +65,7 @@ var convert = function(action, groupedBoards, balances, setting){
             exchange : key,
             currency_code : action.currency,
             //amount : Number(balance[key].currencyAvailable)
-            amount : 5
+            amount : 50000000
         });
 
         candyThinkWay.balance.push({
@@ -73,7 +73,7 @@ var convert = function(action, groupedBoards, balances, setting){
             exchange : key,
             currency_code : action.asset,
             //amount : Number(balance[key].assetAvailable)
-            amount : 30
+            amount : 5000000000
         });
 
         candyThinkWay.fee.push({
