@@ -48,7 +48,7 @@ processor.prototype.orderFailedVacuum = function(action, orderFailed, exchangeap
         setTimeout(function(){
             process(action, this.inMemory.orderFailed, exchangeapi);
             this.inMemory.orderFailed = [];
-        }.bind(this), 1000 * 20);
+        }.bind(this), 1000 * 50);
     }
 
 };
