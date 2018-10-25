@@ -29,7 +29,8 @@ setting.sequence = {
     //'ETH_BTC' : 'BTC_JPY',
     //'BTC_JPY' : 'BTC_JPY'
     //'ETH_JPY' : 'BTC_JPY'
-    'ETH_BTC' : 'ETH_BTC'
+    'ETH_BTC' : 'BTC_JPY',
+    'BTC_JPY' : 'ETH_BTC'
 }
 
 setting.pair = {
@@ -132,8 +133,8 @@ setting.profit = {
         profit_sum : 0.001
     },
     'BTC_JPY' : {
-        profit_percentage : 1.006,
-        profit_sum : 600
+        profit_percentage : 1.0001,
+        profit_sum : 10
     },
     'ETH_JPY' : {
         profit_percentage : 1.006,
