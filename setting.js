@@ -30,8 +30,7 @@ setting.sequence = {
     //'ETH_BTC' : 'BTC_JPY',
     //'BTC_JPY' : 'BTC_JPY'
     //'ETH_JPY' : 'BTC_JPY'
-    'ETH_BTC' : 'BTC_JPY',
-    'BTC_JPY' : 'ETH_BTC'
+    'ETH_BTC' : 'ETH_BTC'
 }
 
 setting.pair = {
@@ -40,7 +39,7 @@ setting.pair = {
         asset : "ETH",
         pair : "ETH_BTC",
         //exchange : ['bitflyer', 'kraken', 'quoine', 'poloniex'],
-        exchange : ['bitflyer', 'poloniex', 'quoine'],
+        exchange : ['bitflyer', 'quoine'],
         bitflyer : {
             product_code : "ETH_BTC",
             pair : "ETH_BTC",
@@ -52,12 +51,12 @@ setting.pair = {
             pair: 'XETHXXBT',
             currency: 'XXBT',
             asset: 'XETH'
-        },*/
+        },
         poloniex : {
             pair : "BTC_ETH",
             currency : "BTC",
             asset : "ETH"
-        },
+        },*/
         quoine : {
             pair : "ETH_BTC",
             currency : "BTC",
@@ -126,16 +125,16 @@ setting.pair = {
 
 setting.profit = {
     'ETH_BTC' : {
-        profit_percentage : 1.0001,
-        profit_sum : 0.000001
+        profit_percentage : 1.0003,
+        profit_sum : 0.00017
     },
     'XRP_BTC' : {
         profit_percentage : 1.006,
         profit_sum : 0.001
     },
     'BTC_JPY' : {
-        profit_percentage : 1.0001,
-        profit_sum : 10
+        profit_percentage : 1.0003,
+        profit_sum : 1000
     },
     'ETH_JPY' : {
         profit_percentage : 1.006,
