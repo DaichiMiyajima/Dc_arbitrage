@@ -149,7 +149,7 @@ candyThink.prototype.arbitrage = function(action, boards,balance,fee,callback){
     var price_sell = 0;
     tradeexchange = tradeexchange + "\n" + "SELL:";
     _.each(_.where(this.order, {result: "SELL"}),function(selllist,key){
-        tradeexchange = tradeexchange + " " + selllist.exchange + "[" + selllist.size + "]";;
+        tradeexchange = tradeexchange + " " + selllist.exchange + "[" + selllist.size + "]";
         price_sell = price_sell + ((selllist.formatedprice * selllist.size) - (selllist.formatedprice * selllist.size * _.where(this.fee, {exchange: selllist.exchange})[0].fee/100));
     }.bind(this));
 
