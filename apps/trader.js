@@ -124,7 +124,7 @@ var trader = function(){
             console.log('想定利益は' + estimatedRevenue + action.currency + 'です' + "\n" + tradeexchange);
             logger.lineNotification('想定利益は' + estimatedRevenue + action.currency + 'です' + "\n" + tradeexchange);
             //following code is for test
-            firebase.statusUpdate(action);
+            //firebase.statusUpdate(action);
         }else{
             //console.log('想定利益は0です。裁定できる板が存在しません。');
             //logger.lineNotification("想定利益は0です。裁定できる板が存在しません。\n");
