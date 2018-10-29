@@ -17,6 +17,7 @@ var agentService = require(__dirname + '/../services/agent.js');
 var candyThinkOBJ = require(__dirname + '/../indicator/candyThink.js');
 var candyRefreshOBJ = require(__dirname + '/../indicator/candyRefresh.js');
 var reportService = require(__dirname + '/../services/reporter.js');
+var balanceService = require(__dirname + '/../services/balance.js');
 
 var config = require(__dirname + '/../config.js');
 var config = config.init();
@@ -31,6 +32,7 @@ var exchangeapi = new exchangeapiService(config, logger, setting);
 var agent = new agentService(firebase, setting);
 var reporter = new reportService(firebase, setting, logger, inMemory);
 var processor = new processorService(advisor, logger, inMemory, reporter);
+var balance = new balanceService(firebase, setting, logger);
 
 var trader = function(){
 
@@ -42,12 +44,15 @@ var trader = function(){
             });
         }else if(system == 'running'){
             logger.lineNotification("取引を開始します", function(finished){
-                firebase.trading();
-                firebase.orderFailedConnection();
-                firebase.orderFailedCount();
-                firebase.requestConnection();
-                finished();
-            });
+                    balance.setBalance(exchangeapi, function(){
+                        console.log("cb--------------");
+                        firebase.trading();
+                        firebase.orderFailedConnection();
+                        firebase.orderFailedCount();
+                        firebase.requestConnection();
+                        finished();
+                    });
+                });
             
         }else{
             throw "不正なモードが選択されています";
@@ -68,7 +73,6 @@ var trader = function(){
             }
         }.bind(this));
     })
-
 
     firebase.on('orderFailedStream', function(orderFailed){
         var action = {

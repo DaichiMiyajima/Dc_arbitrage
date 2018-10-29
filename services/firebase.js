@@ -25,6 +25,7 @@ var firebase = function(config,setting){
         'lineNotification',
         'referObjectLimit',
         'chartUpdate',
+        'updateObject',
         'disconnect',
         'orderFailedConnection',
         'orderFailedCount',
@@ -116,6 +117,17 @@ firebase.prototype.chartUpdate = function(pass, item, time){
         console.log("Error: " + error);
     });
 }
+
+firebase.prototype.updateObject = function(object, pass, key, cb){
+    var args = arguments;
+    this.FirebaseAccess.child(pass).child(key).update(object).then(function(){
+        if(cb){
+            cb();
+        }
+    }, function(error) {
+        console.log("Error: " + error);
+    });
+};
 
 firebase.prototype.disconnect = function(){
     this.admin.app().delete();

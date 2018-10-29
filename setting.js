@@ -10,6 +10,7 @@ setting.statusPass = env + '/common/system/tradestatus'
 setting.requestPass = env + '/common/system/Request/'
 setting.profitPass = env + '/think/chart/profit/';
 setting.orderCompletionPass = env + '/common/system/orderstatus';
+setting.latestbalancePass = env + '/think/latest/';
 
 setting.analysisPass = '/analysis/';
 
