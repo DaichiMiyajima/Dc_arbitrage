@@ -143,13 +143,13 @@ candyThink.prototype.arbitrage = function(action, boards,balance,fee,callback){
     var price_buy = 0;
     var tradeexchange = "Buy:";
     _.each(_.where(this.order, {result: "BUY"}),function(buylist,key){
-        tradeexchange = tradeexchange + " " + buylist.exchange;
+        tradeexchange = tradeexchange + " " + buylist.exchange + "[" + buylist.size + "]";
         price_buy = price_buy + ((buylist.formatedprice * buylist.size) + (buylist.formatedprice * buylist.size * _.where(this.fee, {exchange: buylist.exchange})[0].fee/100));
     }.bind(this));
     var price_sell = 0;
     tradeexchange = tradeexchange + "\n" + "SELL:";
     _.each(_.where(this.order, {result: "SELL"}),function(selllist,key){
-        tradeexchange = tradeexchange + " " + selllist.exchange;
+        tradeexchange = tradeexchange + " " + selllist.exchange + "[" + selllist.size + "]";
         price_sell = price_sell + ((selllist.formatedprice * selllist.size) - (selllist.formatedprice * selllist.size * _.where(this.fee, {exchange: selllist.exchange})[0].fee/100));
     }.bind(this));
 

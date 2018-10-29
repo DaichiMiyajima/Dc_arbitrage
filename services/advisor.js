@@ -64,16 +64,14 @@ var convert = function(action, groupedBoards, balances, setting){
             exchange_type : exchange_type_count,
             exchange : key,
             currency_code : action.currency,
-            //amount : Number(balance[key].currencyAvailable)
-            amount : 50000000
+            amount : Number(balance[key].currencyAvailable)
         });
 
         candyThinkWay.balance.push({
             exchange_type : exchange_type_count,
             exchange : key,
             currency_code : action.asset,
-            //amount : Number(balance[key].assetAvailable)
-            amount : 5000000000
+            amount : Number(balance[key].assetAvailable)
         });
 
         candyThinkWay.fee.push({
